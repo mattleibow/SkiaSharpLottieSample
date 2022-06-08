@@ -14,6 +14,13 @@ public partial class MainPage : ContentPage
         InitializeComponent();
     }
 
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+        animation = null;
+    }
+
     protected override async void OnAppearing()
     {
         base.OnAppearing();
@@ -31,6 +38,10 @@ public partial class MainPage : ContentPage
         // Start a timer to tick
         Dispatcher.StartTimer(TimeSpan.FromSeconds(interval), () =>
         {
+            // null means the page is going away
+            if (animation is null)
+                return false;
+
             // Move to the next frame
             animation.SeekFrameTime(time);
 
